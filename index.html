@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Editor - Modern Image Processing</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-image"></i> Photo Editor</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" id="uploadBtn">
+                    <i class="fas fa-upload"></i> Upload Image
+                </button>
+                <button class="btn btn-success" id="saveBtn">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button class="btn btn-secondary" id="undoBtn">
+                    <i class="fas fa-undo"></i> Undo
+                </button>
+                <button class="btn btn-info" id="historyToggleBtn">
+                    <i class="fas fa-history"></i> History Panel
+                </button>
+            </div>
+        </header>
+
+        <!-- Script Running Indicator -->
+        <div class="script-indicator" id="scriptIndicator">
+            <i class="fas fa-cog fa-spin"></i> Running photo_editor.py
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Side: Canvas and Tools -->
+            <div class="left-panel">
+                <!-- Image Preview Area -->
+                <div class="preview-container">
+                    <div class="preview-comparison">
+                        <!-- Original Image -->
+                        <div class="comparison-panel">
+                            <h4><i class="fas fa-image"></i> Original</h4>
+                            <div class="preview-area" id="originalArea">
+                                <div class="placeholder">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Upload an image to get started</p>
+                                </div>
+                                <canvas id="originalCanvas"></canvas>
+                            </div>
+                        </div>
+                        <!-- Processed Image -->
+                        <div class="comparison-panel">
+                            <h4><i class="fas fa-magic"></i> Processed</h4>
+                            <div class="preview-area" id="processedArea">
+                                <div class="placeholder">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Apply operations to see results</p>
+                                </div>
+                                <canvas id="processedCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Operations Toolbar -->
+                <div class="toolbar">
+                    <div class="toolbar-section">
+                        <h3><i class="fas fa-tools"></i> Image Operations</h3>
+                        <div class="toolbar-grid">
+                            <button class="tool-btn" data-action="crop" title="Crop Image">
+                                <i class="fas fa-crop"></i>
+                                <span>Crop</span>
+                            </button>
+                            <button class="tool-btn" data-action="rotate" title="Rotate Image">
+                                <i class="fas fa-redo"></i>
+                                <span>Rotate</span>
+                            </button>
+                            <button class="tool-btn" data-action="blur" title="Apply Blur">
+                                <i class="fas fa-blur"></i>
+                                <span>Blur</span>
+                            </button>
+                            <button class="tool-btn" data-action="sharpen" title="Sharpen Image">
+                                <i class="fas fa-cut"></i>
+                                <span>Sharpen</span>
+                            </button>
+                            <button class="tool-btn" data-action="brightness" title="Adjust Brightness">
+                                <i class="fas fa-sun"></i>
+                                <span>Brightness</span>
+                            </button>
+                            <button class="tool-btn" data-action="contrast" title="Adjust Contrast">
+                                <i class="fas fa-adjust"></i>
+                                <span>Contrast</span>
+                            </button>
+                            <button class="tool-btn" data-action="grayscale" title="Convert to Grayscale">
+                                <i class="fas fa-circle-notch"></i>
+                                <span>Grayscale</span>
+                            </button>
+                            <button class="tool-btn" data-action="edge-detection" title="Edge Detection">
+                                <i class="fas fa-border-all"></i>
+                                <span>Edge Detection</span>
+                            </button>
+                            <button class="tool-btn" data-action="filter" title="Add Filter">
+                                <i class="fas fa-filter"></i>
+                                <span>Add Filter</span>
+                            </button>
+                            <button class="tool-btn" data-action="draw" title="Draw with Pen">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Draw</span>
+                            </button>
+                            <button class="tool-btn" data-action="erase" title="Eraser">
+                                <i class="fas fa-eraser"></i>
+                                <span>Erase</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Slider Controls -->
+                    <div class="controls-panel" id="controlsPanel" style="display: none;">
+                        <!-- Controls will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Image Thumbnail Grid -->
+                <div class="thumbnail-section">
+                    <h3><i class="fas fa-th"></i> Recent Images</h3>
+                    <div class="thumbnail-grid" id="thumbnailGrid">
+                        <!-- Thumbnails will be added dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: History Panel -->
+            <div class="history-panel" id="historyPanel">
+                <div class="history-header">
+                    <h2><i class="fas fa-list"></i> History</h2>
+                    <button class="close-btn" id="closeHistoryBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="history-item">
+                        <i class="fas fa-brightness"></i>
+                        <span>Brightness Adjusted</span>
+                        <small>2 minutes ago</small>
+                    </div>
+                    <div class="history-item">
+                        <i class="fas fa-redo"></i>
+                        <span>Image Rotated</span>
+                        <small>5 minutes ago</small>
+                    </div>
+                    <div class="history-item">
+                        <i class="fas fa-filter"></i>
+                        <span>Filter Applied</span>
+                        <small>8 minutes ago</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+    
+    <script src="script.js"></script>
+</body>
+</html>
+
+
